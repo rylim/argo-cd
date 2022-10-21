@@ -61,7 +61,7 @@ type Client interface {
 	Init() error
 	Fetch(revision string) error
 	Submodule() error
-	Checkout(revision string, submoduleEnabled bool) error
+	Checkout(revision string, submoduleEnabled bool, fetchSubmodules bool) error
 	LsRefs() (*Refs, error)
 	LsRemote(revision string) (string, error)
 	LsFiles(path string) ([]string, error)
@@ -383,7 +383,7 @@ func (m *nativeGitClient) Submodule() error {
 }
 
 // Checkout checkout specified revision
-func (m *nativeGitClient) Checkout(revision string, submoduleEnabled bool) error {
+func (m *nativeGitClient) Checkout(revision string, submoduleEnabled bool, fetchSubmodules bool) error {
 	if revision == "" || revision == "HEAD" {
 		revision = "origin/HEAD"
 	}
@@ -404,7 +404,7 @@ func (m *nativeGitClient) Checkout(revision string, submoduleEnabled bool) error
 		}
 	}
 	if _, err := os.Stat(m.root + "/.gitmodules"); !os.IsNotExist(err) {
-		if submoduleEnabled {
+		if submoduleEnabled && fetchSubmodules {
 			if err := m.Submodule(); err != nil {
 				return err
 			}

@@ -13,7 +13,7 @@ type Client struct {
 }
 
 // Checkout provides a mock function with given fields: revision, submoduleEnabled
-func (_m *Client) Checkout(revision string, submoduleEnabled bool) error {
+func (_m *Client) Checkout(revision string, submoduleEnabled bool, fetchSubmodules bool) error {
 	ret := _m.Called(revision, submoduleEnabled)
 
 	var r0 error

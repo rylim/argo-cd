@@ -338,6 +338,21 @@ You can also manage SSH known hosts entries in a declarative, self-managed ArgoC
 
 Submodules are supported and will be picked up automatically. If the submodule repository requires authentication then the credentials will need to match the credentials of the parent repository. Set ARGOCD_GIT_MODULES_ENABLED=false to disable submodule support
 
+This can also be disabled for individual applications in a declarative way in [application.yaml](../operator-manual/application.yaml) by setting the `fetchSubmodules` field to `false`, for example:
+
+```yaml
+spec:
+  # The project the application belongs to.
+  project: default
+
+  # Source of the application manifests
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git  # Can point to either a Helm chart repo or a git repo.
+    targetRevision: HEAD  # For Helm, this refers to the chart version.
+    path: guestbook  # This has no meaning for Helm charts pulled directly from a Helm repo instead of git.
+    fetchSubmodules: false  # Set this to false when you want to disable git submodules fetch for the application.
+```
+
 ## Declarative Configuration
 
 See [declarative setup](../operator-manual/declarative-setup.md#repositories)
